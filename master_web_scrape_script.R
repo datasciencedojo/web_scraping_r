@@ -57,8 +57,11 @@ rate.pid <- rate.pid.split[,1]
 
 # rating
 rating <- webpage %>% html_nodes(".item-rating") %>% html_attr("title")
-split_rating <- str_split_fixed(string = rating, pattern="-", n = 2)
-rating <- as.data.frame(split_rating)[2]
+    # result: <string><+\s><rating>
+rating <- str_split_fixed(string = rating, pattern="\\+\\s", n = 2)[,2]
+    # result:   [1]         [2]
+    #           <string\s>  <rating>
+rating_df <- as.data.frame(cbind(rate.pid, rating))
 
 # combine
 
